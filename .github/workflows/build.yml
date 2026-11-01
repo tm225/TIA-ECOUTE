@@ -45,7 +45,20 @@ jobs:
 
       - name: Compiler l'APK debug
         working-directory: ${{ env.PROJECT_DIR }}
-        run: gradle assembleDebug --no-daemon --stacktrace
+        run: |
+          set -o pipefail
+          gradle assembleDebug --no-daemon --console=plain 2>&1 | tee "$GITHUB_WORKSPACE/build_debug.log"
+
+      - name: Résumé des erreurs (si échec)
+        if: failure()
+        run: |
+          {
+            echo "## Erreurs de compilation"
+            echo '```'
+            grep -E "^e: |What went wrong|error:|Execution failed" -A2 "$GITHUB_WORKSPACE/build_debug.log" | head -80
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          grep -E "^e: " "$GITHUB_WORKSPACE/build_debug.log" | head -20 | while read -r l; do echo "::error::$l"; done
 
       - name: Compiler l'APK release (optimisé)
         continue-on-error: true
