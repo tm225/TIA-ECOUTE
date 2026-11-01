@@ -31,7 +31,13 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - uses: android-actions/setup-android@v3
+      - name: Préparer le SDK Android (déjà installé sur le runner)
+        run: |
+          export SDKM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          [ -x "$SDKM" ] || SDKM=$(ls "$ANDROID_HOME"/cmdline-tools/*/bin/sdkmanager 2>/dev/null | head -n1)
+          yes | "$SDKM" --licenses > /dev/null 2>&1 || true
+          "$SDKM" "platforms;android-35" "build-tools;35.0.0" > /dev/null 2>&1 || true
+          echo "sdk.dir=$ANDROID_HOME" > "$PROJECT_DIR/local.properties"
 
       - uses: gradle/actions/setup-gradle@v4
         with:
