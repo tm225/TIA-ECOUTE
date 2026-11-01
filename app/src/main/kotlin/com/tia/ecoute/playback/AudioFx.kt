@@ -157,6 +157,7 @@ class AudioFx(private val prefs: Prefs) {
         session = 0
     }
 
+    @JvmName("do_setEnabled")
     fun setEnabled(on: Boolean) {
         enabled = on
         prefs.eqEnabled = on
@@ -183,6 +184,7 @@ class AudioFx(private val prefs: Prefs) {
     }
 
     /** Amplification du volume : 0 à 100 % (jusqu'à +15 dB). */
+    @JvmName("do_setBoost")
     fun setBoost(percent: Int) {
         boost = percent.coerceIn(0, 100)
         prefs.boost = boost
@@ -198,6 +200,7 @@ class AudioFx(private val prefs: Prefs) {
         setVirt(0)
     }
 
+    @JvmName("do_setBass")
     fun setBass(v: Int) {
         bass = v.coerceIn(0, 1000)
         prefs.bass = bass
@@ -207,6 +210,7 @@ class AudioFx(private val prefs: Prefs) {
         } catch (_: Throwable) {}
     }
 
+    @JvmName("do_setVirt")
     fun setVirt(v: Int) {
         virt = v.coerceIn(0, 1000)
         prefs.virt = virt

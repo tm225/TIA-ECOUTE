@@ -175,6 +175,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     var liveEnergy by mutableFloatStateOf(0f)
         private set
 
+    @JvmName("do_setDiscStyle")
     fun setDiscStyle(i: Int) {
         discStyle = i
         prefs.discStyle = i
@@ -210,13 +211,17 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         prefs.themeIndex = i
     }
 
+    @JvmName("do_setResumeOnStart")
     fun setResumeOnStart(v: Boolean) { resumeOnStart = v; prefs.resumeOnStart = v }
+    @JvmName("do_setKeepScreenOn")
     fun setKeepScreenOn(v: Boolean) { keepScreenOn = v; prefs.keepScreenOn = v }
+    @JvmName("do_setSkipSilence")
     fun setSkipSilence(v: Boolean) {
         skipSilence = v
         prefs.skipSilence = v
         PlaybackService.exoRef?.skipSilenceEnabled = v
     }
+    @JvmName("do_setPauseOnUnplug")
     fun setPauseOnUnplug(v: Boolean) {
         pauseOnUnplug = v
         prefs.pauseOnUnplug = v
@@ -464,6 +469,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    @JvmName("do_setSpeed")
     fun setSpeed(s: Float) {
         controller?.setPlaybackSpeed(s)
         speed = s
