@@ -93,16 +93,7 @@ fun TiaRoot(vm: MainViewModel, requestPermission: () -> Unit) {
                             else -> MenuScreen(vm)
                         }
                     }
-                    var last by remember { mutableStateOf<Detail?>(null) }
-                    LaunchedEffect(vm.detail) { if (vm.detail != null) last = vm.detail }
-                    val shown = vm.detail ?: last
-                    AnimatedVisibility(
-                        visible = vm.detail != null,
-                        enter = slideInHorizontally { it } + fadeIn(),
-                        exit = slideOutHorizontally { it } + fadeOut()
-                    ) {
-                        shown?.let { DetailScreen(vm, it) }
-                    }
+                    DetailOverlay(vm)
                 }
                 AnimatedVisibility(
                     visible = vm.current != null,
@@ -182,5 +173,20 @@ private fun BottomBar(vm: MainViewModel) {
                 )
             }
         }
+    }
+}
+
+/** Écran de détail glissant. Défini à part pour éviter le conflit avec AnimatedVisibility de Column. */
+@Composable
+private fun DetailOverlay(vm: MainViewModel) {
+    var last by remember { mutableStateOf<Detail?>(null) }
+    LaunchedEffect(vm.detail) { if (vm.detail != null) last = vm.detail }
+    val shown = vm.detail ?: last
+    AnimatedVisibility(
+        visible = vm.detail != null,
+        enter = slideInHorizontally { it } + fadeIn(),
+        exit = slideOutHorizontally { it } + fadeOut()
+    ) {
+        shown?.let { DetailScreen(vm, it) }
     }
 }

@@ -77,7 +77,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.hsv
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.draw.shadow
@@ -134,11 +133,14 @@ fun shareTrack(ctx: Context, t: Track) {
     }
 }
 
+fun hsvColor(h: Float, s: Float, v: Float): Color =
+    Color(android.graphics.Color.HSVToColor(floatArrayOf(h, s, v)))
+
 fun fallbackBrush(id: Long): Brush {
     var h = ((id * 47L) % 360L).toFloat()
     if (h < 0f) h += 360f
     return Brush.linearGradient(
-        listOf(Color.hsv(h, 0.65f, 0.60f), Color.hsv((h + 55f) % 360f, 0.75f, 0.40f))
+        listOf(hsvColor(h, 0.65f, 0.60f), hsvColor((h + 55f) % 360f, 0.75f, 0.40f))
     )
 }
 
